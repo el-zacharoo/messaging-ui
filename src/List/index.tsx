@@ -51,7 +51,9 @@ const List = () => {
     return (
         <>
             <Typography variant="h3">Current chats</Typography>
-            {loading && <Skeleton height={200} />}
+            {loading &&
+                <Skeleton height={200} />
+            }
             {!loading && messages &&
                 <>
                     {messages.cursor?.map((msg: Message, index: number) =>
