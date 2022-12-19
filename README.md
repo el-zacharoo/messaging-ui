@@ -6,5 +6,5 @@ Uses auth0 to create a new user who can then message anyone in the system
 
 ## Getting started
 
-`yarn` to install all deps
-`yarn dev` to run the app
+- `yarn` to install all deps
+- `yarn dev` to run the app
