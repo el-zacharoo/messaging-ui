@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import LoadingButton from '@mui/lab/LoadingButton';
+import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -8,6 +9,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+    const [error, setError] = useState<string>('');
     const [values, setValues] = useState({
         given_name: '',
         family_name: '',
@@ -21,6 +23,7 @@ const SignUp = () => {
     const navigate = useNavigate();
 
     const signUp = async () => {
+
         const resp = await fetch(`https://${import.meta.env.VITE_AUTH_DOMAIN}/dbconnections/signup`, {
             method: 'POST',
             headers: {
@@ -28,19 +31,32 @@ const SignUp = () => {
             },
             body: JSON.stringify(values)
         })
+        const data = await resp.json();
+
         if (resp.ok) {
             navigate("/")
         }
         else {
-            console.log(resp)
+            if (data.description) {
+                setError(data.description)
+            }
+            if (data.message) {
+                setError(data.message)
+            }
+            if (data.error) {
+                setError(data.error)
+            }
         }
     }
 
-
     return (
         <Dialog maxWidth="md" open={true}  >
-
             <Grid sx={{ p: 2 }} spacing={2} container>
+                {error &&
+                    <Grid xs={12}>
+                        <Alert variant='filled' severity="error">{error}</Alert>
+                    </Grid>
+                }
                 <Grid xs={12}>
                     <Typography variant="h3">Sign Up</Typography>
                 </Grid>
