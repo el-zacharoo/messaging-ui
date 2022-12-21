@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import { useAuth0, User } from "@auth0/auth0-react";
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import AppBar from '@mui/material/AppBar';
@@ -19,13 +18,11 @@ import { GetUser } from '@/auth/getUser';
 
 const Header = () => {
     const navigate = useNavigate();
-    const { logout }: User = useAuth0();
-
     const [person, setPerson] = useState<any>();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
-    GetUser(setPerson); 
+    GetUser(setPerson);
 
     const handleClick = (e: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(e.currentTarget);
@@ -38,6 +35,18 @@ const Header = () => {
         navigate(path);
         setAnchorEl(null);
     }
+
+    const logout = async () => {
+        localStorage.clear();
+        // await fetch(`https://${import.meta.env.VITE_AUTH_DOMAIN}/logout`, {
+        //     headers: {
+        //         'content-type': 'application/json',
+        //         'Access-Control-Allow-Origin': '*',
+        //     },
+        // });
+        window.location.href = '/';
+    }
+
 
     return (
         <AppBar position="relative" sx={{ padding: 1 }} elevation={0} >
@@ -58,7 +67,7 @@ const Header = () => {
                                 <ListItemIcon><PersonIcon fontSize="small" /></ListItemIcon>
                                 <Typography >Profile</Typography>
                             </MenuItem>
-                            <MenuItem onClick={() => logout({ returnTo: window.location.origin })}>
+                            <MenuItem onClick={() => logout()}>
                                 <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
                                 <Typography>Logout</Typography>
                             </MenuItem>

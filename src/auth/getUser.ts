@@ -15,6 +15,7 @@ export const GetUser = (setPerson: Function) => {
             const data = await resp.json();
             if (resp.ok) {
                 setPerson(data);
+                console.log(data)
 
             }
         }

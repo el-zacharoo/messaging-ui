@@ -4,13 +4,13 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -35,7 +35,8 @@ const SignIn = () => {
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('id_token', data.id_token);
             localStorage.setItem('expires_in', data.expires_in);
-            navigate("/");
+            window.location.href = '/';
+
         }
     }
 
