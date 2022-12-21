@@ -15,11 +15,17 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
+import { GetUser } from '@/auth/getUser';
+
 const Header = () => {
     const navigate = useNavigate();
-    const { user, logout, loginWithRedirect }: User = useAuth0();
+    const { logout }: User = useAuth0();
+
+    const [person, setPerson] = useState<any>();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
+    GetUser(setPerson); 
 
     const handleClick = (e: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(e.currentTarget);
@@ -39,10 +45,13 @@ const Header = () => {
                 <Link underline="none" sx={{ display: 'flex', '& svg': { fontSize: '2rem', mr: 1 }, alignItems: 'center', color: 'info.main', cursor: 'pointer' }} onClick={() => handleNavigate("/")}>
                     <Typography color="background.paper">Messages</Typography>
                 </Link>
-                {user ?
+                {/* {loading && <Skeleton width={100} height={24} />} */}
+
+
+                {person ?
                     <>
-                        <Button onClick={handleClick} color="inherit" endIcon={<Avatar sx={{ width: 24, height: 24 }} alt={user.name} src={user.picture} />} >
-                            {user.name}
+                        <Button onClick={handleClick} color="inherit" endIcon={<Avatar sx={{ width: 24, height: 24 }} alt={person.name} src={person.picture} />} >
+                            {person.name}
                         </Button>
                         <Menu id="menu" anchorEl={anchorEl} open={open} onClose={handleClose}  >
                             <MenuItem onClick={() => handleNavigate("/account")}>
@@ -58,9 +67,10 @@ const Header = () => {
                     :
                     <Box>
                         <Button onClick={() => handleNavigate("/sign-up")} color="inherit" >Sign Up</Button>
-                        <Button onClick={() => loginWithRedirect()} color="inherit" >Login</Button>
+                        <Button onClick={() => handleNavigate('/login')} color="inherit" >Login</Button>
                     </Box>
                 }
+
             </Toolbar>
         </AppBar>
     )
