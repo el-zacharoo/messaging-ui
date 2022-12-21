@@ -47,7 +47,7 @@ const SignIn = () => {
                     <TextField fullWidth label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </Grid>
                 <Grid xs={12}>
-                    <TextField fullWidth label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <TextField type="password" fullWidth label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Grid>
                 <Grid xs={12}>
                     <Button onClick={(e: any) => onSubmit(e)} variant="contained">Sign In</Button>
