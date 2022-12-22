@@ -22,6 +22,8 @@ const Header = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
+    console.log(person)
+
     GetUser(setPerson);
 
     const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -38,12 +40,6 @@ const Header = () => {
 
     const logout = async () => {
         localStorage.clear();
-        // await fetch(`https://${import.meta.env.VITE_AUTH_DOMAIN}/logout`, {
-        //     headers: {
-        //         'content-type': 'application/json',
-        //         'Access-Control-Allow-Origin': '*',
-        //     },
-        // });
         window.location.href = '/';
     }
 
