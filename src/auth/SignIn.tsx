@@ -15,7 +15,7 @@ const SignIn = () => {
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const resp = await fetch(`https://${import.meta.env.VITE_AUTH_DOMAIN}/oauth/token`, {
+        const resp = await fetch(`http://localhost:8082/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
