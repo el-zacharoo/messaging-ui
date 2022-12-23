@@ -44,8 +44,8 @@ const Header = () => {
         window.location.href = '/';
     }
 
-    console.log(state)
 
+    console.log(state)
     return (
         <AppBar position="relative" sx={{ padding: 1 }} elevation={0} >
             <Toolbar variant='dense' sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>

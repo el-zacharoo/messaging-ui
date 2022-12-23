@@ -4,7 +4,6 @@ import cloneDeep from 'lodash.clonedeep';
 
 type State = {
     user: User | null;
-    token: string | null;
     loading: boolean;
 }
 
@@ -15,7 +14,6 @@ type Action = {
 }
 
 type User = {
-
     id: string;
     email: string;
     name: string;
@@ -27,7 +25,6 @@ type User = {
 
 const init: State = {
     user: null,
-    token: null,
     loading: false
 };
 
@@ -40,11 +37,13 @@ const api = import.meta.env.VITE_AUTH_API;
 const authContext: React.Context<any> = createContext(init);
 
 const reducer = (state: State, action: Action) => {
+
     switch (action.type) {
         case 'init':
             return {
                 ...state,
                 user: cloneDeep(state.user),
+
                 loading: true,
                 error: null,
             };
@@ -56,6 +55,13 @@ const reducer = (state: State, action: Action) => {
                 error: null,
             };
         case 'signin':
+            return {
+                ...state,
+
+                loading: false,
+                error: null,
+            }
+
         case 'error':
             return {
                 ...state,
@@ -74,7 +80,6 @@ const reducer = (state: State, action: Action) => {
 
 export const useUser = () => {
     const context = useContext(authContext);
-
     if (!context) {
         throw new Error('useEntity must be used within an AuthProvider');
     }
@@ -125,11 +130,9 @@ export const useUser = () => {
             const data = await resp.json();
             if (resp.ok) {
                 localStorage.setItem('access_token', data.accessToken);
-                localStorage.setItem('id_token', data.idToken);
-                localStorage.setItem('expires_in', data.expiresIn);
+                dispatch({ type: 'signin', payload: data });
                 window.location.href = '/';
             }
-            dispatch({ type: 'signin', payload: data });
         } catch (error) {
             dispatch({ type: 'error', payload: error });
         }
