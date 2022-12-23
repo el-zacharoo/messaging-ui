@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
@@ -14,17 +14,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
-import { GetUser } from '@/auth/getUser';
+import { useUser } from '@/auth/userContext';
 
 const Header = () => {
     const navigate = useNavigate();
-    const [person, setPerson] = useState<any>();
+    const { state, getUser } = useUser();
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
-    console.log(person)
-
-    GetUser(setPerson);
+    useEffect(() => {
+        getUser();
+    }, [getUser]);
 
     const handleClick = (e: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(e.currentTarget);
@@ -43,6 +44,7 @@ const Header = () => {
         window.location.href = '/';
     }
 
+    console.log(state)
 
     return (
         <AppBar position="relative" sx={{ padding: 1 }} elevation={0} >
@@ -50,13 +52,10 @@ const Header = () => {
                 <Link underline="none" sx={{ display: 'flex', '& svg': { fontSize: '2rem', mr: 1 }, alignItems: 'center', color: 'info.main', cursor: 'pointer' }} onClick={() => handleNavigate("/")}>
                     <Typography color="background.paper">Messages</Typography>
                 </Link>
-                {/* {loading && <Skeleton width={100} height={24} />} */}
-
-
-                {person ?
+                {state.user ?
                     <>
-                        <Button onClick={handleClick} color="inherit" endIcon={<Avatar sx={{ width: 24, height: 24 }} alt={person.name} src={person.picture} />} >
-                            {person.name}
+                        <Button onClick={handleClick} color="inherit" endIcon={<Avatar sx={{ width: 24, height: 24 }} alt={state.user.name} src={state.user.picture} />} >
+                            {state.user.name}
                         </Button>
                         <Menu id="menu" anchorEl={anchorEl} open={open} onClose={handleClose}  >
                             <MenuItem onClick={() => handleNavigate("/account")}>
@@ -75,7 +74,6 @@ const Header = () => {
                         <Button onClick={() => handleNavigate('/login')} color="inherit" >Login</Button>
                     </Box>
                 }
-
             </Toolbar>
         </AppBar>
     )

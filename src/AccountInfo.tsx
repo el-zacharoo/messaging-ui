@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -9,30 +9,32 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { GetUser } from '@/auth/getUser';
+import { useUser } from '@/auth/userContext';
 
 const AccountInfo = () => {
-    const [person, setPerson] = useState<any>();
+    const { state, getUser } = useUser();
 
-    GetUser(setPerson);
+    useEffect(() => {
+        getUser();
+    }, [getUser]);
 
     return (
         <Stack spacing={2}>
-            {person &&
+            {state.user &&
                 <Card>
                     <CardHeader
-                        avatar={<Avatar src={person.picture} alt={`${person.nickname}'s avatar`} />}
-                        title={person.nickname}
+                        avatar={<Avatar src={state.user.picture} alt={`${state.user.nickname}'s avatar`} />}
+                        title={state.user.nickname}
                     />
                     <CardContent>
                         <Stack divider={<Divider />}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
                                 <Typography>Email:</Typography>
-                                <Typography>{person.email}</Typography>
+                                <Typography>{state.user.email}</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
                                 <Typography>Name:</Typography>
-                                <Typography>{`${person.given_name} ${person.family_name}`}</Typography>
+                                <Typography>{`${state.user.given_name} ${state.user.family_name}`}</Typography>
                             </Box>
                         </Stack>
                     </CardContent>

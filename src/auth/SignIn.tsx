@@ -5,9 +5,10 @@ import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 
-const api: string = import.meta.env.VITE_AUTH_API;
+import { useUser } from "@/auth/userContext";
 
 const SignIn = () => {
+    const { signIn } = useUser();
     const [error, setError] = useState<string>("");
     const [credentials, setCredentials] = useState({
         username: "",
@@ -27,29 +28,7 @@ const SignIn = () => {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        try {
-            const resp = await fetch(`${api}/SignIn`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({
-                    authUserSignIn: credentials
-                })
-            })
-            const data = await resp.json();
-            if (resp.ok) {
-                localStorage.setItem('access_token', data.accessToken);
-                localStorage.setItem('id_token', data.idToken);
-                localStorage.setItem('expires_in', data.expiresIn);
-                window.location.href = '/';
-            }
-        }
-        catch {
-            setError("Failed to log in");
-        }
+        signIn(credentials)
     }
 
     return (
